@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:tabView>
+            <p:tab title="Form">
+                <h:form>
+                    <p:growl id="growl" for="growlResult" showDetail="true"/>
+                    <h:panelGrid columns="5">
+                        <p:spinner id="firstValue" value="#{manageBean.firstNumber}"/>
+                        <h:outputText value="+"/>
+                        <p:spinner id="secondValue" value="#{manageBean.secondNumber}"/>
+                        <p:commandButton value="Calculate" update="result date growl" action="#{manageBean.addNumbers()}" ajax="true"/>
+                        <h:outputText id="result" value="= #{manageBean.result}"/>
+                    </h:panelGrid>
+                    <h:outputText id="date" value="#{manageBean.date}"/>
+                </h:form>
+            </p:tab>
+            <p:tab title="Table">
+                <p:dataTable value="#{manageBean.students}" var="student" paginator="true" rows="4">
+                    <p:column headerText="First name">
+                        <h:outputText value="#{student.firstName}"/>
+                    </p:column>
+                    <p:column headerText="Last name" sortBy="#{student.lastName}">
+                        <h:outputText value="#{student.lastName}"/>
+                    </p:column>
+                    <p:column headerText="Average" sortBy="#{student.average}">
+                        <h:outputText value="#{student.average}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="Chart">
+                <p:chart type="line" model="#{manageBean.lineModel}" widgetVar="chart"/>
+                <p:commandButton value="Reset" onclick="PF('chart').resetZoom()"/>
+            </p:tab>
+        </p:tabView>
+        <!--        <h:form>
+                    <p:spinner id="minMax" min="0" max="42" />
+                </h:form>-->
+    </h:body>
+</html>
+
