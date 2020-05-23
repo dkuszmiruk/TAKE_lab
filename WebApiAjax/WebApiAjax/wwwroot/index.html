@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+    </script>
+
+</head>
+<body>
+    <script type="text/javascript">
+
+        function setData(json) {
+            //$("#sum").html(json.sum);
+            //$("#difference").html(json.difference);
+            //$("#product").html(json.product);
+            //$("#quotient").html(json.quotient);
+            document.getElementById("sum").textContent = json.sum;
+            document.getElementById("difference").textContent = json.difference;
+            document.getElementById("product").textContent = json.product;
+            document.getElementById("quotient").textContent = json.quotient;
+        }
+
+        $(document).ready(function () {
+            $("#callAPIjQuery").click(function () {
+                var x = document.getElementById("x").value;
+                var y = document.getElementById("y").value;
+                $.ajax({
+                    type: "GET",
+                    data: { "x": x, "y": y },
+                    url: "/api/math"
+                }).done(function (json) {
+                    setData(json);
+                });
+     });
+        });
+
+        $(document).ready(function () {
+            $("#callAPIvanillaJS").click(function () {
+                var x = document.getElementById("x").value;
+                var y = document.getElementById("y").value;
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == XMLHttpRequest.DONE) {  //4
+                        if (xmlhttp.status == 200) {
+                            var json = JSON.parse(xmlhttp.responseText)
+                            setData(json);
+                        }
+                    }
+                    return true;
+                };
+                xmlhttp.open("GET", "/api/math?x=" + x + "&y=" + y, true);
+                xmlhttp.send();
+            });
+        });
+
+
+
+    </script>
+    <div>
+        <h1>Calculations</h1>
+        <form>
+            x = <input type="text" id="x" />
+            y = <input type="text" id="y" />
+            <input type="button" id="callAPIjQuery" value="Call API (jQuery)" />
+            <input type="button" id="callAPIvanillaJS" value="Call API (vanilla JS)" />
+        </form>
+        x + y = <span id="sum"></span><br />
+        x - y = <span id="difference"></span><br />
+        x * y = <span id="product"></span><br />
+        x / y = <span id="quotient"></span><br />
+    </div>
+
+</body>
+</html>
